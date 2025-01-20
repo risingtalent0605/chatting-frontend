@@ -12,12 +12,14 @@ const VerifyEmail = () => {
     const token = new URLSearchParams(location.search).get('token');
 
     if (token) {
-      axios.get(process.env.REACT_APP_BACKEND_URL + `/api/verify-email?token=${token}`)
+      axios.get(process.env.REACT_APP_BACKEND_URL + `api/verify-email?token=${token}`)
         .then((response) => {
           setMessage(response.data.message);
           setLoading(false);
         })
         .catch((error) => {
+          console.log(error);
+          
           setMessage(error.response?.data?.message || 'Verification failed');
           setLoading(false);
         });
