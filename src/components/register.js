@@ -23,7 +23,7 @@ const Register = () => {
       // Implement authentication logic here
     }
     try {
-      const { data } = await axios.post(process.env.REACT_APP_BACKEND_URL + '/api/register', formData);
+      const { data } = await axios.post(process.env.REACT_APP_BACKEND_URL + 'api/register', formData);
       setError(data.message)
       // navigate('/login');
       console.log('User Registered:', data);

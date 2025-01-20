@@ -24,7 +24,7 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
     useEffect(() => {
         const getUserList = async () => {
             try {
-                const response = await axios.get(process.env.REACT_APP_BACKEND_URL + '/api/getUserList?user=' + me, {
+                const response = await axios.get(process.env.REACT_APP_BACKEND_URL + 'api/getUserList?user=' + me, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

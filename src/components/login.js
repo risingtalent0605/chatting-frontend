@@ -28,7 +28,7 @@ const Login = () => {
         }
 
         try {
-            const token = (await axios.post(process.env.REACT_APP_BACKEND_URL + '/api/login', formData)).data.token;
+            const token = (await axios.post(process.env.REACT_APP_BACKEND_URL + 'api/login', formData)).data.token;
             dispatch(login({ token }));
             navigate('/chat');
         } catch (error) {
@@ -41,7 +41,7 @@ const Login = () => {
         // console.log(user);
         try {
             const data = { email: user.email, name: user.displayName, accessToken: user.accessToken }
-            const token = (await axios.post(process.env.REACT_APP_BACKEND_URL + '/api/google-login', data)).data.token;
+            const token = (await axios.post(process.env.REACT_APP_BACKEND_URL + 'api/google-login', data)).data.token;
             dispatch(login({ token }));
             navigate('/chat');
         } catch (error) {
