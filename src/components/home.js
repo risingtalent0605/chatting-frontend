@@ -17,12 +17,6 @@ const Home = () => {
   }
 
   return (
-    // <Container maxWidth="sm">
-    //   <h1>Welcome!</h1>
-    //     <Button type="button" variant="contained" color="primary" onClick={handleChange} fullWidth>
-    //       Logout
-    //     </Button>
-    // </Container>
 
     <Box
       display="flex"

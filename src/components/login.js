@@ -9,6 +9,9 @@ import axios from 'axios';
 
 const Login = () => {
 
+
+    // console.log(process.env.REACT_APP_BACKEND_URL);
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [formData, setFormData] = useState({ email: "", password: "" });
@@ -38,30 +41,32 @@ const Login = () => {
     };
 
     const googleLogin = async (user) => {
-        // console.log(user);
+
         try {
-            const data = { email: user.email, name: user.displayName, accessToken: user.accessToken }
+            const data = { email: user.email, name: user.displayName, accessToken: user.idToken }
             const token = (await axios.post(process.env.REACT_APP_BACKEND_URL + 'api/google-login', data)).data.token;
             dispatch(login({ token }));
             navigate('/chat');
         } catch (error) {
-            setError(error.response.data.error)
-            console.error('Login Error:', error.response);
+            console.error('Login Error:', error.response.data);
         }
         navigate('/chat');
     };
 
-    const handleSignIn = () => {
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                console.log(result.user);
-                googleLogin(result.user);
-            })
-            .catch((error) => {
-                console.log('error');
 
-                setError(error.message);
-            });
+    const handleSignIn = async () => {
+
+        try {
+            provider.addScope('email');
+            const result = await signInWithPopup(auth, provider)
+            const user = result._tokenResponse;
+            console.log(user);
+            googleLogin(user);
+        } catch (error) {
+            console.log('error');
+            setError(error.message);
+        }
+
     };
 
     return (

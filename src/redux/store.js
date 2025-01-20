@@ -16,7 +16,6 @@ const authSlice = createSlice({
   reducers: {
     login(state, action) {
       const decoded = jwtDecode(action.payload.token);
-      console.log(action.payload.token);
       state.user.name = decoded.name;
       state.user.email = decoded.email;
       state.user.token = action.payload.token;
@@ -48,26 +47,3 @@ export const store = configureStore({
 
 export const persistor = persistStore(store);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import { configureStore } from "@reduxjs/toolkit";
-// import authReducer from "./authSlice";
-
-// export const store = configureStore({
-//   reducer: {
-//     auth: authReducer,
-//   },
-// });
