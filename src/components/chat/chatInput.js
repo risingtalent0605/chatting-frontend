@@ -27,6 +27,7 @@ const ChatInput = ({ selectedUser, setNewMessage, newMessage }) => {
             sender: me,
             receiver: selectedUser,
             read: false,
+            new: true,
             timestamp: new Date(),
         });
     };

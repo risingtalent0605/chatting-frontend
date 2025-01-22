@@ -11,7 +11,7 @@ const authSlice = createSlice({
       name: null,
       email: null,
       token: null
-    },
+    }
   },
   reducers: {
     login(state, action) {

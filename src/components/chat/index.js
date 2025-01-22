@@ -3,6 +3,7 @@ import { Box, AppBar, Toolbar, Typography } from '@mui/material';
 import ChatInput from './chatInput';
 import MessageBox from './messageBox';
 import Sidebar from './sidebar';
+import { SnackbarProvider, useSnackbar } from 'notistack';
 
 const Chat = () => {
 
@@ -10,6 +11,8 @@ const Chat = () => {
   const [newMessage, setNewMessage] = useState('');
 
   return (
+    <SnackbarProvider maxSnack={5}>
+          
     <Box sx={{ display: 'flex', height: '100vh' }}>
       <Sidebar selectedUser={selectedUser} setSelectedUser={setSelectedUser} />
       <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
@@ -24,6 +27,7 @@ const Chat = () => {
         {selectedUser && <ChatInput selectedUser={selectedUser} newMessage={newMessage} setNewMessage={setNewMessage} />}
       </Box>
     </Box>
+    </SnackbarProvider>
   );
 };
 

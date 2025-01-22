@@ -14,7 +14,7 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={token ? <Navigate to="/home" /> : <Navigate to="/login" />} />
+        <Route path='/' element={token ? <Navigate to="/chat" /> : <Navigate to="/login" />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/auth/callback" element={<Register />} />

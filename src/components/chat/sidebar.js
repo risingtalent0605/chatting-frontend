@@ -6,6 +6,7 @@ import { db } from '../../firebase';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../redux/store';
+import { useSnackbar } from 'notistack';
 
 const Sidebar = ({ selectedUser, setSelectedUser }) => {
 
@@ -15,6 +16,7 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
     const token = useSelector((state) => state.auth.user.token);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { enqueueSnackbar } = useSnackbar();
 
     const handleChange = () => {
         dispatch(logout());
@@ -49,8 +51,25 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
         const unsubscribe = onSnapshot(otherNewMessagesQuery, (snapshot) => {
 
             const tempUnreadCounts = {};
-            snapshot.docs.forEach(async (doc) => {
-                const data = doc.data();
+            snapshot.docs.forEach(async (item) => {
+                const data = item.data();
+                console.log(data)
+                if (data.new === true) {
+                    enqueueSnackbar('New message from ' + data.sender,
+                        {
+                            variant: 'info',
+                            anchorOrigin: {
+                                vertical: 'top',    // 'top' or 'bottom'
+                                horizontal: 'right', // 'left', 'center', or 'right'
+                            }
+                        }
+                    );
+                    const messageRef = doc(db, 'messages', item.id);
+                    await updateDoc(messageRef, {
+                        new: false,
+                    });
+                }
+
                 tempUnreadCounts[data.sender] = (tempUnreadCounts[data.sender] || 0) + 1;
                 tempUnreadCounts[selectedUser] = 0
                 setUnreadCounts(tempUnreadCounts);
@@ -89,6 +108,8 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
         return () => unsubscribe();
 
     }, [selectedUser])
+
+
 
     return (
         <Box sx={{ width: '25vw', backgroundColor: '#3f51b5', color: 'white', padding: '20px', display: 'flex', flexDirection: 'column' }}>
