@@ -18,6 +18,26 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
     const dispatch = useDispatch();
     const { enqueueSnackbar } = useSnackbar();
 
+    const trigger = (sender, text, index) => {
+        const showNotification = (title, options, timeout=1000) => {
+            if (Notification.permission === "granted") {
+                const notification = new Notification(title, options);
+                setTimeout(() => {
+                    notification.close();
+                }, timeout);
+            } else {
+                console.error("Notification permission not granted.");
+            }
+        };
+        
+        // Example usage
+        showNotification(sender, {
+            body: text,
+            icon: "/path-to-icon.png", // Path to your notification icon,
+            // tag: index
+        });
+    }
+
     const handleChange = () => {
         dispatch(logout());
         navigate('/login');
@@ -51,25 +71,25 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
         const unsubscribe = onSnapshot(otherNewMessagesQuery, (snapshot) => {
 
             const tempUnreadCounts = {};
-            snapshot.docs.forEach(async (item) => {
+            snapshot.docs.forEach(async (item, index) => {
                 const data = item.data();
                 console.log(data)
                 if (data.new === true) {
-                    enqueueSnackbar('New message from ' + data.sender,
-                        {
-                            variant: 'info',
-                            anchorOrigin: {
-                                vertical: 'top',    // 'top' or 'bottom'
-                                horizontal: 'right', // 'left', 'center', or 'right'
-                            }
-                        }
-                    );
-                    const messageRef = doc(db, 'messages', item.id);
-                    await updateDoc(messageRef, {
-                        new: false,
-                    });
+                    // enqueueSnackbar('New message from ' + data.sender,
+                    //     {
+                    //         variant: 'info',
+                    //         anchorOrigin: {
+                    //             vertical: 'top',    // 'top' or 'bottom'
+                    //             horizontal: 'right', // 'left', 'center', or 'right'
+                    //         }
+                    //     }
+                    // );
+                    // const messageRef = doc(db, 'messages', item.id);
+                    // await updateDoc(messageRef, {
+                    //     new: false,
+                    // });
+                    trigger(data.sender, data.text, index)
                 }
-
                 tempUnreadCounts[data.sender] = (tempUnreadCounts[data.sender] || 0) + 1;
                 tempUnreadCounts[selectedUser] = 0
                 setUnreadCounts(tempUnreadCounts);

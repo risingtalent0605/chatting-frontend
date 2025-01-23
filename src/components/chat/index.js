@@ -1,14 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, AppBar, Toolbar, Typography } from '@mui/material';
 import ChatInput from './chatInput';
 import MessageBox from './messageBox';
 import Sidebar from './sidebar';
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import { SnackbarProvider } from 'notistack';
+import { requestNotificationPermission, onForegroundNotification  } from "../../firebase";
 
 const Chat = () => {
 
   const [selectedUser, setSelectedUser] = useState(null);
   const [newMessage, setNewMessage] = useState('');
+  const [deviceToken, setDeviceToken] = useState(null);
+  // requestNotificationPermission();
+
+  // onMessageListener().then((payload) => {
+  //   // Handle the notification (e.g., display an alert)
+  //   alert(`New message: ${payload.notification.body}`);
+  // });
+
+  // const options = {
+  //   body: notification.body,
+  //   icon: notification.icon || "/default-icon.png",
+  //   badge: "/default-badge.png",
+  // };
+
+  // Display Chrome notification
+  // new Notification(notification.title, options);
+
+  useEffect(() => {
+    const setupNotifications = async () => {
+      const token = await requestNotificationPermission();
+      if (token) {
+        setDeviceToken(token); // Save token to send it to the backend
+      }
+    };
+
+    setupNotifications();
+
+    // Listen for foreground notifications
+    onForegroundNotification((payload) => {
+      console.log("Notification received in foreground:", payload);
+      alert(`New message: ${payload.notification.body}`);
+    });
+  }, [])
 
   return (
     <SnackbarProvider maxSnack={5}>

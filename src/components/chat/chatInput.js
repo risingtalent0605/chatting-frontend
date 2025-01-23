@@ -30,6 +30,7 @@ const ChatInput = ({ selectedUser, setNewMessage, newMessage }) => {
             new: true,
             timestamp: new Date(),
         });
+        
     };
 
     return (
