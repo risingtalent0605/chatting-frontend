@@ -9,7 +9,7 @@ const MessageBox = ({ selectedUser }) => {
 
     const [messages, setMessages] = useState([]);
     const me = useSelector((state) => state.auth.user.email);
-    const chatEndRef = useRef(null);
+    const chatEndRef = useRef(null);    
     
     // get current user's all message 
     useEffect(() => {
@@ -30,14 +30,14 @@ const MessageBox = ({ selectedUser }) => {
             })
           );
           
-          chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
           setMessages(newMessages);
+          chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
 
         });
 
         return () => unsubscribe();
 
-    }, []);
+    }, [selectedUser]);
 
     return (
         <Paper sx={{ flexGrow: 1, overflowY: 'scroll', padding: '20px', marginTop: '10px' }}>
