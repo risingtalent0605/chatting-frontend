@@ -44,6 +44,7 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
         navigate('/login');
     }
 
+    // get all user's name
     useEffect(() => {
         const getUserList = async () => {
             try {
@@ -61,6 +62,8 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
         getUserList()
     }, [])
 
+
+    // 
     useEffect(() => {
 
         const otherNewMessagesQuery = query(
@@ -72,7 +75,7 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
         const unsubscribe = onSnapshot(otherNewMessagesQuery, (snapshot) => {
 
             const tempUnreadCounts = {};
-            snapshot.docs.forEach(async (item, index) => {
+            snapshot.docs.forEach(async (item) => {
                 const data = item.data();
                 console.log(data)
                 if (data.new === true) {
@@ -89,7 +92,7 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
                     await updateDoc(messageRef, {
                         new: false,
                     });
-                    trigger(data.sender, data.text, index)
+                    trigger(data.sender, data.text)
                 }
                 tempUnreadCounts[data.sender] = (tempUnreadCounts[data.sender] || 0) + 1;
                 tempUnreadCounts[selectedUser] = 0
