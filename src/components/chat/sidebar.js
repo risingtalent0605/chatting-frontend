@@ -17,9 +17,10 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { enqueueSnackbar } = useSnackbar();
-
+    
+    // notification
     const trigger = (sender, text, index) => {
-        const showNotification = (title, options, timeout=1000) => {
+        const showNotification = (title, options, timeout=2000) => {
             if (Notification.permission === "granted") {
                 const notification = new Notification(title, options);
                 setTimeout(() => {
@@ -84,10 +85,10 @@ const Sidebar = ({ selectedUser, setSelectedUser }) => {
                     //         }
                     //     }
                     // );
-                    // const messageRef = doc(db, 'messages', item.id);
-                    // await updateDoc(messageRef, {
-                    //     new: false,
-                    // });
+                    const messageRef = doc(db, 'messages', item.id);
+                    await updateDoc(messageRef, {
+                        new: false,
+                    });
                     trigger(data.sender, data.text, index)
                 }
                 tempUnreadCounts[data.sender] = (tempUnreadCounts[data.sender] || 0) + 1;
